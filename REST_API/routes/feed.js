@@ -27,6 +27,8 @@ router.put('/post/:postId', [
     body('content')
         .trim()
         .isLength({min: 5})
-], feedControllers.updatePost)
+], feedControllers.updatePost);
+
+router.delete('/post/:postId', feedControllers.deletePost)
 
 module.exports = router;
