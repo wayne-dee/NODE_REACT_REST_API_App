@@ -1,17 +1,19 @@
 const express = require('express');
 
+const path = require('path');
+
 const mongoose = require('mongoose')
 
 const bodyParser = require('body-parser')
 
 const feedRoutes = require('./routes/feed');
-const res = require('express/lib/response');
 
 const app = express();
 
 const d = null
 
 app.use(bodyParser.json()) // application.json
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // server to send response to client // diff port i.e codepen.io //
 app.use((req, res, next) => {
