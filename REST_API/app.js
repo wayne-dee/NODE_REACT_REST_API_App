@@ -23,7 +23,16 @@ app.use((req, res, next) => {
     next()
 })
 
-app.use('/feed', feedRoutes)
+app.use('/feed', feedRoutes);
+
+// ERROR HANDLING middleware
+app.use((error, req, res, next) => {
+    console.log(error)
+    const status = error.statusCode || 500;
+    const message = error.message;
+
+    res.status(status).json({ message: message })
+})
 
 mongoose.connect(
     'mongodb+srv://onkeo:Douglous3@retailshopnode.cwxp1.mongodb.net/Messages'
