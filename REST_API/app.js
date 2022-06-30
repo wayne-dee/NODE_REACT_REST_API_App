@@ -4,16 +4,41 @@ const path = require('path');
 
 const mongoose = require('mongoose')
 
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+
+const multer = require('multer');
 
 const feedRoutes = require('./routes/feed');
 
 const app = express();
 
-const d = null
-
-app.use(bodyParser.json()) // application.json
-app.use('/images', express.static(path.join(__dirname, 'images')));
+const fileStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, 'images');
+    },
+    filename: (req, file, cb) => {
+      cb(null, new Date().toISOString() + '-' + file.originalname);
+    }
+  });
+  
+  const fileFilter = (req, file, cb) => {
+    if (
+      file.mimetype === 'image/png' ||
+      file.mimetype === 'image/jpg' ||
+      file.mimetype === 'image/jpeg'
+    ) {
+      cb(null, true);
+    } else {
+      cb(null, false);
+    }
+  };
+  
+  // app.use(bodyParser.urlencoded()); // x-www-form-urlencoded <form>
+  app.use(bodyParser.json()); // application/json
+  app.use(
+    multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
+  );
+  app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // server to send response to client // diff port i.e codepen.io //
 app.use((req, res, next) => {

@@ -25,13 +25,14 @@ exports.createPost = (req, res, next) => {
         throw error;
     }
     const title = req.body.title;
+    const imageUrl = req.file.path;
     const content = req.body.content;
 
     // craete post in db
     const post = new Post({
         title: title, 
         content: content,
-        imageUrl: '/images/roomHouse.jpg',
+        imageUrl: imageUrl,
         creator: {name : "douglas"},
     })
     post.save().then(result => {
