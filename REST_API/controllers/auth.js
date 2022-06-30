@@ -35,3 +35,29 @@ exports.signup = (req, res, next) => {
         }
     })
 }
+
+exports.login = (req, res, next) => {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    User.findOne({email : email}).then(user => {
+        if (!user) {
+            const error = new Error('User not found!');
+            error.statusCode = 401;
+            throw error
+        }
+        loadUser = user;
+        return bcrypt.compare(password, user.password)
+    }).then(isEqual => {
+        if (!isEqual) {
+            const error = new Error('wrong password');
+            error.statusCode = 401;
+            throw error;
+        }
+    }).catch(err => {
+        if(!err.statusCode) {
+            err.statusCode = 500;
+            next(err)
+        }
+    })
+}
