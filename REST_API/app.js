@@ -1,14 +1,11 @@
 const express = require('express');
-
 const path = require('path');
-
 const mongoose = require('mongoose')
-
 const bodyParser = require('body-parser');
-
 const multer = require('multer');
 
 const feedRoutes = require('./routes/feed');
+const authRoutes = require('./routes/auth');
 
 const app = express();
 
@@ -49,6 +46,7 @@ app.use((req, res, next) => {
 })
 
 app.use('/feed', feedRoutes);
+app.use('/auth', authRoutes);
 
 // ERROR HANDLING middleware
 app.use((error, req, res, next) => {
