@@ -59,9 +59,9 @@ exports.login = async (req, res, next) => {
         );
         res.status(200).json({token: token, userId: user._id.toString()})
     } catch (error) {
-        if(!err.statusCode) {
-            err.statusCode = 500;
-            next(err)
+        if(!error.statusCode) {
+            error.statusCode = 500;
+            next(error)
         }
     }
 }
