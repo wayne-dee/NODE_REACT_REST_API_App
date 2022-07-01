@@ -62,7 +62,13 @@ mongoose.connect(
     'mongodb+srv://onkeo:Douglous3@retailshopnode.cwxp1.mongodb.net/Messages'
 ).then(result => {
     console.log('connected to DB')
-    app.listen(8080)
+    const server = app.listen(8080)
+    
+    // connecting sockect io
+    const io = require('socket.io')(server);
+    io.on('connection', socket => {
+      console.log('Client connected')
+    })
 }).catch(err => {
     console.log(err)
 });
